@@ -1,0 +1,22 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+    <h1>Article List</h1>
+    <div class="articles">
+        {% for article in articles %}
+            <div class="article">
+                <h2><a href="{% url 'articles:slug' slug=article.slug %}">{{ article.title }}</a></h2>
+                <p>{{ article.snippet }}</p>
+                <p>{{ article.date }}</p>
+                {% if user.username == article.author.username %}
+                    <form method='post' action="{% url 'articles:list' %}">
+                        {% csrf_token %}
+                        <input type="text" name="delete_slug" value="{{ article.slug }}" hidden>
+                        <button type="submit" class='delete_article_button'>Delete</button>
+                    </form>
+                {% endif %}
+                <p class='author'>Added by {{ article.author.username }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
