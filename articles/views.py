@@ -17,6 +17,13 @@ def article_slug(request, slug):
     #return HttpResponse(slug)
     try:
         article = Article.objects.get(slug=slug)
+        if request.method == 'POST':
+            comment = request.POST.get('comment')
+            #print(request.POST.get('comment'))
+            # TODO: save a comment and display it to article detail
+            user = request.user
+            print(f'comment by {request.user} msg : {comment}')
+            
         return render(request, "article_detail.html", {'article' : article})
     except:
         return redirect("articles:list")
