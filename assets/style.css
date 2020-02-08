@@ -163,3 +163,21 @@ a.highlight{
     border : #00dba0 solid 1px;
     font-size: 1em;
 }
+
+.comment textarea{
+    height: 1em;
+    width: 15em;
+}
+
+.comment label{
+    margin: 10px 20px;
+}
+
+.comment p{
+    margin: 10px 20px;
+    color : #00dba0;
+}
+
+.article_create_error{
+    color: #00dba0;
+}

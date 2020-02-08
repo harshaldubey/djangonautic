@@ -3,6 +3,7 @@ from .models import Article
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from . import forms
+from django.contrib import messages
 
 # Create your views here.
 def article_list(request):
@@ -17,20 +18,30 @@ def article_slug(request, slug):
     #return HttpResponse(slug)
     try:
         article = Article.objects.get(slug=slug)
+        comments = article.comment_set.all()
         if request.method == 'POST':
-            comment = request.POST.get('comment')
-            #print(request.POST.get('comment'))
-            # TODO: save a comment and display it to article detail
+            form = forms.AddComment(request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.author = request.user
+                comment.article = article
+                comment.save()
+                return redirect("articles:slug", slug=slug)
+
             user = request.user
-            print(f'comment by {request.user} msg : {comment}')
-            
-        return render(request, "article_detail.html", {'article' : article})
+        else:
+            form = forms.AddComment()
+        return render(request, "article_detail.html", {'article' : article, 'form' : form, 'comments' : comments})
     except:
         return redirect("articles:list")
 
 @login_required(login_url='accounts:login')
 def article_create(request):
     if (request.method == 'POST'):
+        if Article.objects.filter(slug=request.POST.get("slug")).exists():
+            form = forms.CreateArticle()
+            messages.error(request, "This article title(slug) is exists!!")
+            return render(request, 'article_create.html', {'form' : form})
         form = forms.CreateArticle(request.POST, request.FILES)
         if (form.is_valid()):
             # save article to DB
@@ -38,6 +49,5 @@ def article_create(request):
             instance.author = request.user
             instance.save()
             return redirect("articles:list")
-    else:
-        form = forms.CreateArticle()
+    form = forms.CreateArticle()
     return render(request, 'article_create.html', {'form' : form})

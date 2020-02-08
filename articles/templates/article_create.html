@@ -5,6 +5,13 @@
 
     <div class='create-article'>
         <h2>Create an Awesome New Article</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <h3 class='article_create_error'>{{ message }}</h3>
+            {% endfor %}
+        {% endif %}
+
         <form action="{% url 'articles:create' %}" method='post' class="site-form" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form }}

@@ -1,5 +1,7 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from django.db.models.fields.related import ForeignKey
+
 
 # Create your models here.
 class Article(models.Model):
@@ -16,3 +18,7 @@ class Article(models.Model):
     def snippet(self):
         return self.body[:50] + "..."
 
+class Comment(models.Model):
+    article = ForeignKey(Article, on_delete=models.CASCADE)
+    message = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default=None)

@@ -24,10 +24,10 @@
                     <li><a href="{% url 'articles:create' %}" class='highlight'>New Article</a></li>
                     {% else %}
                     <li>
-                        <a href="{% url 'accounts:login' %}">Login</a>
+                        <a href="{% url 'accounts:login' %}">Login 🔑</a>
                     </li>
                     <li>
-                        <a href="{% url 'accounts:signup' %}">Signup</a>
+                        <a href="{% url 'accounts:signup' %}">Signup 📝</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -37,5 +37,7 @@
             {% block content %}
             {% endblock %}
         </div>
+
+
     </body>
 </html>
