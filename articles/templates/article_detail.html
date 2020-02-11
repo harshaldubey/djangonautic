@@ -9,6 +9,9 @@
         <p>{{ article.body }}</p>
         <p>{{ article.date }}</p>
         <p>Added by {{ article.author }}</p>
+        {% if user.username|slugify == article.author|slugify %}
+            <a href='{% url "articles:edit" article.slug %}'><button class='edit_article_button'>Edit Article</button></a>
+        {% endif %}
         <hr>
         {% if comments|length >= 1 %}
             <p>List of all comments</p>

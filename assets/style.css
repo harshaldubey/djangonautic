@@ -181,3 +181,16 @@ a.highlight{
 .article_create_error{
     color: #00dba0;
 }
+
+.edit_article_button{
+    padding: 10px;
+    background: #f8a4a4;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    color: black;
+    cursor: pointer;
+    border : #00dba0 solid 1px;
+    font-size: 1em;
+}

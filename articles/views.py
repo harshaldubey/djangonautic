@@ -51,3 +51,22 @@ def article_create(request):
             return redirect("articles:list")
     form = forms.CreateArticle()
     return render(request, 'article_create.html', {'form' : form})
+
+def article_edit(request, slug):
+    if Article.objects.filter(slug=slug).exists():
+        article = Article.objects.get(slug=slug)
+        if str(article.author) != str(request.user.username):
+            return redirect('articles:slug', slug=slug)
+        if request.method == 'GET':
+            return render(request, 'article_edit.html', {'article' : article})
+        else:
+            title = request.POST.get('title')
+            body = request.POST.get('body')
+            slug = request.POST.get('slug')
+
+            article.title = title
+            article.body = body
+            article.slug = slug
+
+            article.save()
+    return redirect("articles:slug", slug=slug)
